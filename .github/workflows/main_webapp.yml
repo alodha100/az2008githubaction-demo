@@ -34,12 +34,11 @@ jobs:
       - name: Run tests (optional)
         run: |
           source venv/bin/activate
-          # Add test commands here if you have tests
-          # python -m pytest tests/
+          python -m unittest test_app.py
 
       - name: Zip artifact for deployment
         run: |
-          zip -r release.zip . -x "venv/*" ".git/*" ".github/*" "*.md"
+          zip -r release.zip . -x "venv/*" ".git/*" ".github/*" "*.md" "__pycache__/*"
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
@@ -53,6 +52,7 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
       - name: Download artifact from build job
@@ -67,7 +67,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'az2008-demo-webapp'  # Replace with your actual Azure Web App name
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}  # Configure this secret in GitHub
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: .
