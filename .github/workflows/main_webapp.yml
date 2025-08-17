@@ -67,7 +67,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'YOUR_AZURE_WEB_APP_NAME'  # Replace with your Azure Web App name
+          app-name: 'az2008-demo-webapp'  # Replace with your actual Azure Web App name
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}  # Configure this secret in GitHub
           package: .
