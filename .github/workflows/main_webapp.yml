@@ -64,13 +64,14 @@ jobs:
         run: unzip -o release.zip
 
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v4
+        uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: release.zip
+
 
 
 
